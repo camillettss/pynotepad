@@ -12,23 +12,23 @@ menu_layout=[['File', ['New (Ctrl+N)', 'Save (Ctrl+S)', ' --- ', 'Exit']],
             ['Help', ['About', 'How To']]]
 
 layout= [[psg.Menu(menu_layout)],
-        [psg.Text('New File', font=('Consolas', 10), size=(winw, 1), key='_INFO_')],
-        [psg.Multiline(font=('Consolas', 10), size=(winw, winh), key='_BODY_')]]
+        [psg.Text('New File', font=('Consolas', 10), size=(winw, 1), key='info')],
+        [psg.Multiline(font=('Consolas', 10), size=(winw, winh), key='body')]]
 
 win = psg.Window('camillettss notepad', layout=layout, margins=(0, 0), resizable=True, return_keyboard_events=True, finalize=True)
 win.maximize()
-win['_BODY_'].expand(expand_x=True, expand_y=True)
+win['body'].expand(expand_x=True, expand_y=True)
 
 def new_file():
-    win['_BODY_'].update(value='')
-    win['_INFO_'].update(value='New File')
+    win['body'].update(value='')
+    win['info'].update(value='New File')
     file=None
     return file
 
 def save_file(file):
     '''Save file instantly if already open; otherwise use `save-as` popup'''
     if file:
-        file.write_text(values.get('_BODY_'))
+        file.write_text(values.get('body'))
         psg.popup_no_buttons('Saved', auto_close=True, auto_close_duration=0.6)
     else:
         save_file_as()
@@ -38,16 +38,16 @@ def save_file_as():
     filename = psg.popup_get_file('Save As', save_as=True, no_window=True)
     if filename:
         file = pathlib.Path(filename)
-        file.write_text(values.get('_BODY_'))
-        win['_INFO_'].update(value=file.absolute())
+        file.write_text(values.get('body'))
+        win['info'].update(value=file.absolute())
         return file
 
 def open_file():
     filename=psg.popup_get_file('Open', no_window=True)
     if filename:
         file=pathlib.Path(filename)
-        win['_BODY_'].update(value=file.read_text())
-        win['_INFO_'].update(value=file.absolute())
+        win['body'].update(value=file.read_text())
+        win['info'].update(value=file.absolute())
         return file
 
 def how_to():
